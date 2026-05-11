@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taha için Hangi Üniversite?</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0f;--surf:#16161c;--card:#1c1c24;--b1:#2c2c3a;--b2:#3a3a4e;--acc:#8b7cf8;--a2:#f87c8b;--grn:#7cf8b4;--txt:#ededf5;--mt:#7878a0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 600px 400px at 15% 10%,rgba(139,124,248,.07),transparent 70%),radial-gradient(ellipse 500px 350px at 85% 85%,rgba(248,124,139,.05),transparent 70%);pointer-events:none;z-index:0}
+#app{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 18px 80px}
+
+/* HEADER */
+.hdr{padding:44px 0 28px;text-align:center}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(139,124,248,.12);border:1px solid rgba(139,124,248,.25);color:var(--acc);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:18px}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(28px,6.5vw,50px);font-weight:800;line-height:1.05;letter-spacing:-1px;margin-bottom:12px}
+.hdr h1 span{color:var(--acc)}
+.hdr p{color:var(--mt);font-size:14px;line-height:1.6;max-width:440px;margin:0 auto}
+
+/* NAME */
+.ncard{background:var(--card);border:1px solid var(--b1);border-radius:18px;padding:32px 28px;margin-bottom:32px}
+.ncard h2{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;margin-bottom:6px}
+.ncard p{color:var(--mt);font-size:13px;margin-bottom:22px;line-height:1.55}
+.inp{width:100%;background:var(--surf);border:1px solid var(--b2);border-radius:11px;padding:12px 15px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;margin-bottom:12px}
+.inp:focus{border-color:var(--acc)}
+.inp::placeholder{color:var(--mt)}
+.btn-go{width:100%;background:var(--acc);color:#fff;border:none;border-radius:11px;padding:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s}
+.btn-go:hover{opacity:.9;transform:translateY(-1px)}
+
+/* PROGRESS */
+.pw{display:flex;align-items:center;gap:12px;padding:20px 0 18px}
+.pb{flex:1;height:2px;background:var(--b1);border-radius:1px;overflow:hidden}
+.pf{height:100%;background:var(--acc);transition:width .35s ease}
+.pl{color:var(--mt);font-size:12px;white-space:nowrap;letter-spacing:.5px}
+
+/* SECTION */
+.sec{margin-bottom:28px}
+.sl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:rgba(139,124,248,.2)}
+
+/* CARD */
+.qc{background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:18px 20px;margin-bottom:9px;transition:border-color .2s}
+.qc:hover{border-color:var(--b2)}
+.qt{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px}
+.qi{font-size:18px;flex-shrink:0;margin-top:1px}
+.qtx{font-size:14px;line-height:1.5;color:#c8c8e0}
+.qtx strong{color:var(--txt);font-weight:500}
+.qs{font-size:11px;color:var(--mt);margin-top:3px;font-style:italic}
+
+/* CHOICE */
+.chs{display:flex;flex-direction:column;gap:6px}
+.cb{background:var(--surf);border:1px solid var(--b1);border-radius:9px;padding:9px 13px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--mt);transition:all .15s;display:flex;align-items:center;gap:9px;width:100%}
+.cb:hover{border-color:var(--b2);color:var(--txt)}
+.cb.on{background:rgba(139,124,248,.1);border-color:var(--acc);color:var(--txt)}
+.cbi{font-size:14px;flex-shrink:0}
+.cbt{flex:1;text-align:left}
+.cbck{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--b1);flex-shrink:0;transition:all .15s}
+.cb.on .cbck{background:var(--acc);border-color:var(--acc)}
+
+/* MULTI */
+.ms{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mb{background:var(--surf);border:1px solid var(--b1);border-radius:9px;padding:8px 11px;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--mt);transition:all .15s;width:100%}
+.mb:hover{border-color:var(--b2);color:var(--txt)}
+.mb.on{background:rgba(139,124,248,.1);border-color:var(--acc);color:var(--txt)}
+
+/* YN */
+.yn{display:flex;gap:7px}
+.yb{flex:1;padding:9px 11px;border-radius:9px;border:1px solid var(--b1);background:transparent;color:var(--mt);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.yb.ey:hover,.yb.ey.on{background:rgba(124,248,180,.1);border-color:var(--grn);color:var(--grn)}
+.yb.en:hover,.yb.en.on{background:rgba(248,124,139,.1);border-color:var(--a2);color:var(--a2)}
+
+/* SLIDER */
+.slw{}
+.slm{display:flex;justify-content:space-between;font-size:11px;color:var(--mt);margin-bottom:5px}
+input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(--b1);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--acc);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 2px rgba(139,124,248,.35)}
+.slv{text-align:right;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--acc);margin-top:4px}
+
+/* SUBMIT */
+.sub{padding-top:18px}
+.bsub{width:100%;background:linear-gradient(135deg,var(--acc),#b47cf8);color:#fff;border:none;border-radius:13px;padding:15px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s;letter-spacing:-.3px}
+.bsub:hover{opacity:.9;transform:translateY(-2px)}
+.bsub:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.sht{text-align:center;color:var(--mt);font-size:12px;margin-top:9px}
+
+/* LOADING */
+#ls{text-align:center;padding:80px 0}
+.sp{width:42px;height:42px;border:2.5px solid var(--b1);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 18px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.lh{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:5px}
+.lp{color:var(--mt);font-size:13px}
+
+/* RESULT */
+#rs{padding:28px 0 40px}
+.rh{text-align:center;margin-bottom:32px}
+.rh h2{font-family:'Syne',sans-serif;font-size:clamp(22px,5vw,36px);font-weight:800;letter-spacing:-1px;margin-bottom:5px}
+.rh p{color:var(--mt);font-size:13px}
+
+.aib{background:linear-gradient(135deg,rgba(139,124,248,.08),rgba(248,124,139,.05));border:1px solid rgba(139,124,248,.2);border-radius:16px;padding:22px;margin-bottom:24px}
+.aihd{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.aibg{background:rgba(139,124,248,.15);border:1px solid rgba(139,124,248,.3);color:var(--acc);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.ait{font-size:13px;line-height:1.75;color:#c0c0d8}
+
+.bt{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--mt);margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.bt::after{content:'';flex:1;height:1px;background:var(--b1)}
+
+.t5i{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--b1);border-radius:13px;padding:13px 16px;margin-bottom:8px;transition:border-color .2s}
+.t5i:hover{border-color:var(--b2)}
+.rk{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;width:28px;text-align:center;flex-shrink:0;color:var(--b2)}
+.rk.g{color:#ffd700}.rk.s{color:#c0c0c0}.rk.b{color:#cd7f32}
+.t5n{flex:1;min-width:0}
+.t5p{font-size:13px;font-weight:500;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t5u{font-size:11px;color:var(--mt);margin-top:2px}
+.t5tg{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.tg{font-size:10px;padding:2px 7px;border-radius:9px;background:rgba(139,124,248,.1);border:1px solid rgba(139,124,248,.2);color:#a090f0}
+.tg.c{background:rgba(124,248,180,.08);border-color:rgba(124,248,180,.2);color:#7cf8b4}
+.tg.w{background:rgba(248,216,124,.08);border-color:rgba(248,216,124,.2);color:#f8d87c}
+.bw{width:50px;height:3px;background:var(--b1);border-radius:2px;flex-shrink:0;overflow:hidden}
+.bf{height:100%;background:linear-gradient(90deg,var(--acc),#b47cf8)}
+
+.vc{background:var(--card);border:1px solid var(--b1);border-radius:13px;padding:14px 16px;margin-bottom:8px}
+.vt{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.vn{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.vd{font-size:11px;color:var(--mt)}
+.vp{display:flex;flex-wrap:wrap;gap:4px}
+.vpi{font-size:10px;padding:2px 8px;border-radius:9px;background:rgba(139,124,248,.08);border:1px solid rgba(139,124,248,.18);color:#9d90f0}
+.vpi.f{background:rgba(255,215,0,.1);border-color:rgba(255,215,0,.3);color:#ffd700}
+
+.vcr{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.vcl{font-size:12px;color:var(--txt);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vcc{font-size:12px;font-weight:600;color:var(--acc);width:22px;text-align:right;flex-shrink:0}
+
+.brst{width:100%;background:transparent;border:1px solid var(--b1);color:var(--mt);border-radius:11px;padding:11px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:22px;transition:all .2s}
+.brst:hover{border-color:var(--acc);color:var(--txt)}
+
+.hidden{display:none!important}
+.fi{animation:fi .35s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div class="hdr">
+  <div class="chip">✦ Master Seçimi 2026</div>
+  <h1>Taha için<br><span>Hangi Üniversite?</span></h1>
+  <p>Soruları yanıtla, Taha'ya en uygun programlar sıralansın.<br>Diğerlerinin seçimlerini de gör.</p>
+</div>
+
+<!-- NAME -->
+<div id="ns">
+  <div class="ncard">
+    <h2>Merhaba 👋</h2>
+    <p>Adını yaz — böylece Taha ve diğerleri sonuçlarda senin seçimini görebilir.</p>
+    <input type="text" id="un" class="inp" placeholder="Adın (Taha, Anne, Selin...)" maxlength="30">
+    <button class="btn-go" onclick="start()">Başla →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="qs" class="hidden">
+  <div class="pw"><div class="pb"><div class="pf" id="pf" style="width:0%"></div></div><span class="pl" id="pl">0%</span></div>
+  <div id="qw"></div>
+  <div class="sub">
+    <button class="bsub" id="bs" onclick="submit()" disabled>Sonuçları Gör ✦</button>
+    <div class="sht" id="sh">Tüm soruları yanıtla</div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="ls" class="hidden">
+  <div class="sp"></div>
+  <div class="lh">Hesaplanıyor...</div>
+  <div class="lp">Taha için en uygun programlar belirleniyor</div>
+</div>
+
+<!-- RESULT -->
+<div id="rs" class="hidden"></div>
+
+</div>
+<script>
+// ═══════════════════════════════════
+// JSONBIN CONFIG
+// ═══════════════════════════════════
+const BIN_ID='6a01bfe5adc21f119a835a56';
+const MASTER_KEY='$2a$10$aeQjCmumMrIyD7Abau3.pu/cR2RaWUSp7CAZlfjeuyaEi7IrQ0F0O';
+const BIN_URL=`https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+async function loadVotes(){
+  try{
+    const r=await fetch(BIN_URL,{headers:{'X-Master-Key':MASTER_KEY,'X-Bin-Meta':'false'}});
+    const d=await r.json();
+    const all=Array.isArray(d.votes)?d.votes:(Array.isArray(d)?d:[]);
+    // geçersiz/saldırı kayıtlarını filtrele
+    return all.filter(v=>v&&v.name&&typeof v.name==='string'&&v.name.length>0&&v.name.length<=30&&!v.name.includes('<')&&!v.name.includes('>')&&v.top5&&v.top5.length>0&&v.top5[0].p!=='-');
+  }catch(e){return [];}
+}
+
+async function saveVote(entry){
+  try{
+    const votes=await loadVotes();
+    votes.push(entry);
+    await fetch(BIN_URL,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':MASTER_KEY},
+      body:JSON.stringify({votes})
+    });
+  }catch(e){}
+}
+
+
+// ═══════════════════════════════════
+// GÜVENLİK
+// ═══════════════════════════════════
+function esc(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+function cleanName(s){
+  // sadece harf, rakam, boşluk, Türkçe karakterler
+  return String(s||'').replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ0-9 ]/g,'').trim().slice(0,30);
+}
+
+// ═══════════════════════════════════
+// ÜNİVERSİTE VERİTABANI
+// Kaynaklar: QS 2026, Shanghai GRAS 2024, CHE 2024/25, BKA Suç İstatistikleri 2024
+// ═══════════════════════════════════
+const UNI=[
+  // id, uni, prog, city, ülke
+  // qs=QS genel sıra(1-10), ps=alan puanı(1-10), che=CHE spitze(1-10)
+  // job=iş piyasası(1-10), safe=güvenlik(1-10), apt=havalimanı dk, metro, nl=gece hayatı(1-5)
+  // size=şehir büyüklüğü(1=küçük,5=büyük), kira=kira baskısı(1=düşük,5=yüksek)
+  // type=program türü dizisi, lang=dil, de=Almanya'da kariyer skoru(1-10)
+  {id:"fu",      u:"Freie Universität Berlin",  p:"M.A. Politikwissenschaft (OSI)",       c:"Berlin",    qs:9,ps:10,che:9,job:10,safe:3,apt:30, m:1,nl:5,sz:5,kr:4,t:["ps","ir","sec"],   l:"de",de:10},
+  {id:"hd",      u:"Universität Heidelberg",    p:"M.A. Political Science",               c:"Heidelberg",qs:9,ps:9, che:9,job:8, safe:8,apt:55, m:0,nl:2,sz:2,kr:2,t:["ps"],             l:"en",de:8},
+  {id:"ma_ps",   u:"Universität Mannheim",      p:"M.A. Political Science",               c:"Mannheim",  qs:7,ps:9, che:10,job:9,safe:7,apt:45, m:0,nl:3,sz:3,kr:2,t:["ps","quant"],    l:"en",de:9},
+  {id:"ma_sds",  u:"Universität Mannheim",      p:"M.Sc. Social Data Science (MMSDS)",   c:"Mannheim",  qs:7,ps:8, che:9, job:10,safe:7,apt:45, m:0,nl:3,sz:3,kr:2,t:["data","quant"],  l:"de",de:10},
+  {id:"kn_ps",   u:"Universität Konstanz",      p:"M.A. Politik- u. Verwaltungswiss.",   c:"Konstanz",  qs:6,ps:10,che:10,job:4,safe:10,apt:65, m:0,nl:2,sz:1,kr:1,t:["ps","pol"],     l:"de",de:5},
+  {id:"kn_seds", u:"Universität Konstanz",      p:"M.Sc. Social & Economic Data Science",c:"Konstanz",  qs:6,ps:9, che:9, job:5, safe:10,apt:65, m:0,nl:2,sz:1,kr:1,t:["data","quant"],l:"en",de:5},
+  {id:"goe",     u:"Universität Göttingen",     p:"M.A. Political Science",               c:"Göttingen", qs:6,ps:7, che:8, job:4, safe:9,apt:70, m:0,nl:2,sz:2,kr:1,t:["ps","ir"],     l:"en",de:5},
+  {id:"bn_sis",  u:"Universität Bonn",          p:"M.A. Strategy & International Security",c:"Bonn",    qs:7,ps:7, che:8, job:7, safe:9,apt:20, m:1,nl:3,sz:3,kr:2,t:["ir","sec"],     l:"en",de:7},
+  {id:"bn_ps",   u:"Universität Bonn",          p:"M.A. Politikwissenschaft",             c:"Bonn",      qs:7,ps:7, che:8, job:6, safe:9,apt:20, m:1,nl:3,sz:3,kr:2,t:["ps"],          l:"de",de:7},
+  {id:"rwth",    u:"RWTH Aachen",               p:"M.A. Politikwissenschaft",             c:"Aachen",    qs:9,ps:5, che:7, job:7, safe:8,apt:60, m:0,nl:3,sz:3,kr:2,t:["ps"],          l:"de",de:7},
+  {id:"tue",     u:"Universität Tübingen",      p:"M.A. Democracy & Governing in Europe", c:"Tübingen",  qs:7,ps:6, che:7, job:4, safe:10,apt:60, m:0,nl:2,sz:1,kr:1,t:["ps","ir","pol"],l:"en",de:5},
+  {id:"bam",     u:"Universität Bamberg",       p:"M.A. Politikwissenschaft",             c:"Bamberg",   qs:5,ps:6, che:8, job:6, safe:10,apt:45, m:0,nl:2,sz:1,kr:1,t:["ps"],         l:"de",de:6},
+  {id:"bie",     u:"Universität Bielefeld",     p:"M.A. Political Science",               c:"Bielefeld", qs:5,ps:5, che:7, job:6, safe:10,apt:75, m:0,nl:2,sz:3,kr:1,t:["ps"],         l:"en",de:6},
+];
+
+const APTX={
+  "Berlin":    "✈️ BER — 30 dk",
+  "Mannheim":  "✈️ FRA Frankfurt — 45 dk (ICE)",
+  "Heidelberg":"✈️ FRA Frankfurt — 55 dk (ICE)",
+  "Göttingen": "✈️ HAJ Hannover — ~70 dk",
+  "Bonn":      "✈️ CGN Köln/Bonn — 20 dk",
+  "Konstanz":  "✈️ ZRH Zürich — 65 dk",
+  "Aachen":    "✈️ CGN Köln — 60 dk",
+  "Tübingen":  "✈️ STR Stuttgart — ~60 dk",
+  "Bamberg":   "✈️ NUE Nürnberg — 45 dk",
+  "Bielefeld": "✈️ HAJ Hannover — ~75 dk",
+};
+
+// ═══════════════════════════════════
+// SORULAR (dışarıdan bakış — "Taha" perspektifi)
+// ═══════════════════════════════════
+const SECS=[
+  {lbl:"Taha'nın Geleceği",qs:[
+    {id:"career",type:"choice",i:"🎯",
+     tx:"Taha'yı ileride hangi rolde görürsün?",
+     ch:[
+      {i:"🏛️",t:"Dışişleri'nde diplomat ya da AB/BM politika uzmanı",v:"diplomat"},
+      {i:"🚗",t:"BMW, Audi gibi çok uluslu bir şirkette veri analisti",v:"analyst"},
+      {i:"⚖️",t:"İdari hakim ya da kamu hukukçusu",v:"judge"},
+      {i:"🎓",t:"Akademisyen ya da araştırmacı",v:"academic"},
+      {i:"🏦",t:"Bankacı ya da finansçı",v:"banker"},
+     ]},
+    {id:"direction",type:"choice",i:"🔭",
+     tx:"Taha daha çok hangi yönde uzmanlaşmalı?",
+     ch:[
+      {i:"📊",t:"Veri analizi ve dijital yöntemler",v:"data"},
+      {i:"⚖️",t:"Uluslararası hukuk ve diplomasi",v:"ir"},
+      {i:"🗳️",t:"Demokrasi, kamu yönetimi, seçim politikaları",v:"pol"},
+      {i:"🔐",t:"Güvenlik ve strateji",v:"sec"},
+     ]},
+    {id:"afterde",type:"choice",i:"🌍",
+     tx:"Taha mezun olunca nerede kariyer yapmalı?",
+     sub:"Bu seçim iş piyasası ve network ağırlıklarını etkiliyor",
+     ch:[
+      {i:"🇩🇪",t:"Almanya'da kalsın — Avrupa'da kariyer",v:"de"},
+      {i:"🇹🇷",t:"Türkiye'ye dönüp orada kariyer yapsın",v:"tr"},
+      {i:"🌐",t:"Uluslararası — Brüksel, Cenevre, NY gibi",v:"intl"},
+      {i:"🤷",t:"Henüz belli değil",v:"open"},
+     ]},
+  ]},
+  {lbl:"Üniversite Kriterleri",qs:[
+    {id:"ranking",type:"choice",i:"🏆",
+     tx:"Üniversitenin dünya sıralaması sence ne kadar önemli?",
+     sub:"QS 2026 verilerine göre: Heidelberg #80, FU Berlin #88, RWTH #99, Tübingen #215, Mannheim #416...",
+     ch:[
+      {i:"🥇",t:"İlk 100'de olmalı — marka önemli",v:"top100"},
+      {i:"📋",t:"İlk 300'de olsun yeter",v:"top300"},
+      {i:"🎯",t:"Sıralama değil, alanında güçlü olsun — Konstanz Politikwiss. Shanghai'da dünya 11.",v:"field"},
+      {i:"🤷",t:"Fark etmez",v:"any"},
+     ]},
+    {id:"prestige",type:"choice",i:"✨",
+     tx:"Taha için prestij mi yoksa somut fırsat mı önce gelir?",
+     ch:[
+      {i:"🏅",t:"Prestijli üniversite adı — CV'de fark yaratır",v:"prest"},
+      {i:"🚀",t:"Somut fırsat — staj, network, iş bağlantısı",v:"opp"},
+      {i:"⚖️",t:"İkisi eşit önemde",v:"both"},
+     ]},
+    {id:"lang",type:"choice",i:"🗣️",
+     tx:"Dersler hangi dilde olsun?",
+     ch:[
+      {i:"🇩🇪",t:"Almanca olsun — C1 var, Almanya'da kariyer için daha iyi",v:"de"},
+      {i:"🇬🇧",t:"İngilizce olsun — uluslararası ortam, daha geniş network",v:"en"},
+      {i:"🤝",t:"Fark etmez",v:"any"},
+     ]},
+    {id:"jobmkt",type:"yn",i:"💼",
+     tx:"İş piyasasına yakın bir şehirde mi olmalı?",
+     sub:"Berlin, Mannheim/Frankfurt yakını gibi — staj ve Werkstudent için"},
+  ]},
+  {lbl:"Şehir & Yaşam",qs:[
+    {id:"citytype",type:"choice",i:"🏙️",
+     tx:"Taha için sakin bir şehir mi, büyük kozmopolit bir şehir mi?",
+     ch:[
+      {i:"🌆",t:"Büyük, kozmopolit — Berlin veya Viyana gibi. Çeşitlilik, enerji, seçenek.",v:"big"},
+      {i:"🏙️",t:"Orta boy — Mannheim, Bonn gibi. Dengeli.",v:"mid"},
+      {i:"🌳",t:"Sakin üniversite şehri — Konstanz, Tübingen, Bamberg gibi. Odak ve huzur.",v:"small"},
+     ]},
+    {id:"airport",type:"choice",i:"✈️",
+     tx:"Şehirde havalimanı yok, en yakını 1 saat uzakta. Sorun olur mu?",
+     sub:"Taha'nın Türkiye'ye seyahatleri, vizeler, bayram dönüşleri...",
+     ch:[
+      {i:"✅",t:"Hayır, sorun olmaz — 1 saat kabul edilebilir",v:"ok"},
+      {i:"⚠️",t:"Biraz sıkıntılı ama katlanılır",v:"meh"},
+      {i:"❌",t:"Evet, önemli — yakın olmalı",v:"imp"},
+     ]},
+    {id:"safety",type:"choice",i:"🛡️",
+     tx:"Güvenli ve sakin bir şehir mi olsun, yoksa büyük şehrin dinamizmi öncelikli mi?",
+     sub:"Berlin 2024'te 14.252/100k suç oranıyla Almanya'nın en yüksek şehri",
+     ch:[
+      {i:"🛡️",t:"Güvenli ve sakin — huzur önemli",v:"safe"},
+      {i:"⚖️",t:"Dengeli olsun — ikisi de önemli",v:"bal"},
+      {i:"⚡",t:"Dinamizm öncelikli — şehir enerjisi kabulüm",v:"dyn"},
+     ]},
+    {id:"goal",type:"choice",i:"🎁",
+     tx:"Bu master'dan Taha en çok ne elde etmeli?",
+     ch:[
+      {i:"🌍",t:"Uluslararası ağ ve deneyim",v:"net"},
+      {i:"📚",t:"Derin akademik bilgi ve araştırma",v:"ac"},
+      {i:"💼",t:"İş piyasasına güçlü ve hızlı giriş",v:"job"},
+      {i:"🎓",t:"Doktora için sağlam zemin",v:"phd"},
+     ]},
+  ]},
+];
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let uname='',ans={},req=0,done=0;
+
+function start(){
+  const v=document.getElementById('un').value.trim();
+  if(!v){alert('Adını yazar mısın?');return;}
+  uname=v;
+  document.getElementById('ns').classList.add('hidden');
+  document.getElementById('qs').classList.remove('hidden');
+  build();
+}
+
+function build(){
+  const w=document.getElementById('qw');
+  w.innerHTML='';req=0;done=0;
+  SECS.forEach(s=>{
+    const sd=document.createElement('div');
+    sd.className='sec fi';
+    sd.innerHTML=`<div class="sl">${s.lbl}</div>`;
+    s.qs.forEach(q=>{
+      req++;
+      if(q.type==='slider'){ans[q.id]=3;done++;}
+      const c=document.createElement('div');
+      c.className='qc';
+      const sub=q.sub?`<div class="qs">${q.sub}</div>`:'';
+      c.innerHTML=`<div class="qt"><span class="qi">${q.i}</span><div><div class="qtx">${q.tx}</div>${sub}</div></div>`;
+      if(q.type==='choice'){
+        const d=document.createElement('div');d.className='chs';
+        q.ch.forEach(ch=>{
+          const b=document.createElement('button');b.className='cb';
+          b.innerHTML=`<span class="cbi">${ch.i}</span><span class="cbt">${ch.t}</span><span class="cbck"></span>`;
+          b.onclick=()=>{
+            const was=ans.hasOwnProperty(q.id);ans[q.id]=ch.v;
+            if(!was){done++;upP();}
+            d.querySelectorAll('.cb').forEach(x=>x.classList.remove('on'));
+            b.classList.add('on');chk();
+          };
+          d.appendChild(b);
+        });
+        c.appendChild(d);
+      }else if(q.type==='multi'){
+        ans[q.id]=[];let md=false;
+        const d=document.createElement('div');d.className='ms';
+        q.opts.forEach(o=>{
+          const b=document.createElement('button');b.className='mb';
+          b.innerHTML=`${o.i} ${o.t}`;
+          b.onclick=()=>{
+            const i=ans[q.id].indexOf(o.v);
+            if(i>-1){ans[q.id].splice(i,1);b.classList.remove('on');}
+            else{ans[q.id].push(o.v);b.classList.add('on');}
+            if(!md&&ans[q.id].length>0){md=true;done++;upP();}
+            chk();
+          };
+          d.appendChild(b);
+        });
+        c.appendChild(d);
+      }else if(q.type==='yn'){
+        const d=document.createElement('div');d.className='yn';
+        d.innerHTML=`<button class="yb ey" id="${q.id}_y" onclick="setYN('${q.id}',true)">✓ Evet</button><button class="yb en" id="${q.id}_n" onclick="setYN('${q.id}',false)">✗ Hayır</button>`;
+        c.appendChild(d);
+      }else if(q.type==='slider'){
+        const d=document.createElement('div');d.className='slw';
+        d.innerHTML=`<div class="slm"><span>Önemli değil</span><span>Çok önemli</span></div><input type="range" min="1" max="5" value="3" oninput="setSl('${q.id}',this.value)"><div class="slv" id="${q.id}_v">3/5</div>`;
+        c.appendChild(d);
+      }
+      sd.appendChild(c);
+    });
+    w.appendChild(sd);
+  });
+  upP();chk();
+}
+
+function setYN(id,v){
+  const was=ans.hasOwnProperty(id);ans[id]=v;
+  if(!was){done++;upP();}
+  document.getElementById(id+'_y').classList.toggle('on',v===true);
+  document.getElementById(id+'_n').classList.toggle('on',v===false);
+  chk();
+}
+function setSl(id,v){ans[id]=parseInt(v);document.getElementById(id+'_v').textContent=v+'/5';}
+function upP(){const p=req>0?Math.min(100,Math.round(done/req*100)):0;document.getElementById('pf').style.width=p+'%';document.getElementById('pl').textContent=p+'%';}
+function chk(){const ok=done>=req;document.getElementById('bs').disabled=!ok;document.getElementById('sh').textContent=ok?'Hazırsın! 🎉':`${req-done} soru kaldı`;}
+
+// ═══════════════════════════════════
+// SKORLAMA — araştırma verilerine dayalı
+// ═══════════════════════════════════
+function score(){
+  return UNI.map(u=>{
+    let s=0;
+
+    // === KARİYER HEDEFİ ===
+    if(ans.career==='diplomat'){
+      s+=u.t.includes('ir')?55:u.t.includes('sec')?45:u.t.includes('ps')?30:10;
+      s+=u.ps*4+u.qs*2;
+    }
+    if(ans.career==='analyst'){
+      s+=u.t.includes('data')?60:u.t.includes('quant')?50:20;
+      s+=u.job*5;
+    }
+    if(ans.career==='judge'){
+      s+=u.t.includes('pol')?50:u.t.includes('ps')?35:15;
+      s+=u.de*3;
+    }
+    if(ans.career==='academic'){
+      s+=u.ps*6+u.che*4+u.qs*3;
+    }
+    if(ans.career==='banker'){
+      s+=u.job*6+(u.c==='Mannheim'||u.c==='Frankfurt'?30:0);
+      s+=u.t.includes('econ')?30:0;
+    }
+
+    // === UZMANLAŞMA YÖNÜ ===
+    if(ans.direction==='data')s+=u.t.includes('data')?60:u.t.includes('quant')?40:0;
+    if(ans.direction==='ir')  s+=u.t.includes('ir')?55:u.t.includes('sec')?40:u.t.includes('ps')?20:0;
+    if(ans.direction==='pol') s+=u.t.includes('pol')?55:u.t.includes('ps')?30:0;
+    if(ans.direction==='sec') s+=u.t.includes('sec')?60:u.t.includes('ir')?35:0;
+
+    // === MEZUN SONRASI NEREDE ===
+    if(ans.afterde==='de'){
+      s+=u.de*6+u.job*3;
+      // Almanya'da kariyer: Berlin ve Mannheim en güçlü
+      if(u.c==='Berlin')s+=25;
+      if(u.c==='Mannheim')s+=20;
+    }
+    if(ans.afterde==='tr'){
+      // Türkiye dönüşü: prestij önemli
+      s+=u.qs*5+u.ps*4;
+    }
+    if(ans.afterde==='intl'){
+      // Uluslararası: intl network + program odağı
+      s+=u.ps*4+(u.t.includes('ir')?30:0)+(u.t.includes('sec')?25:0);
+      s+=u.qs*3;
+      if(u.c==='Berlin')s+=20; // Berlin = uluslararası hub
+    }
+    if(ans.afterde==='open'){
+      s+=u.qs*3+u.job*3+u.ps*3;
+    }
+
+    // === SIRALAMA TERCİHİ ===
+    // QS: Heidelberg=80, FU Berlin=88, RWTH=99, Tübingen=215, Mannheim=416, Konstanz=440, Göttingen=301-350, Bonn=201-250
+    const qsTop100=[{id:"hd"},{id:"fu"},{id:"rwth"}];
+    const qsTop300=[{id:"bn_sis"},{id:"bn_ps"},{id:"tue"}];
+    if(ans.ranking==='top100'){
+      s+=u.qs>=9?70:u.qs>=7?20:-20;
+    }
+    if(ans.ranking==='top300'){
+      s+=u.qs>=9?60:u.qs>=7?45:u.qs>=5?10:0;
+    }
+    if(ans.ranking==='field'){
+      // Alan sıralaması: Konstanz Pol.Sci = Almanya 1., Dünya 11. (Shanghai 2024); Mannheim top 35 dünya
+      s+=u.ps*8+u.che*3;
+      if(u.id==='kn_ps'||u.id==='kn_seds')s+=35; // Konstanz Dünya 11!
+      if(u.id==='ma_ps'||u.id==='ma_sds')s+=25;  // Mannheim Dünya top 35
+    }
+    if(ans.ranking==='any'){
+      s+=u.ps*4+u.che*4;
+    }
+
+    // === PRESTİJ vs FIRSATI ===
+    if(ans.prestige==='prest')s+=u.qs*5+u.ps*4;
+    if(ans.prestige==='opp')  s+=u.job*6+u.che*3;
+    if(ans.prestige==='both') s+=u.qs*3+u.job*3+u.ps*3+u.che*2;
+
+    // === DİL TERCİHİ ===
+    if(ans.lang==='de') s+=u.l==='de'?25:0;
+    if(ans.lang==='en') s+=u.l==='en'?30:0;
+    // Fark etmez: nötr
+
+    // === İŞ PİYASASI ===
+    if(ans.jobmkt===true) s+=u.job*8;
+    if(ans.jobmkt===false)s+=u.ps*5+u.che*3;
+
+    // === ŞEHİR TİPİ ===
+    if(ans.citytype==='big')  s+=u.sz===5?60:u.sz===4?30:u.sz===3?5:-15;
+    if(ans.citytype==='mid')  s+=u.sz===3?55:u.sz===2?25:u.sz===4?25:u.sz===5?5:-5;
+    if(ans.citytype==='small')s+=u.sz<=2?60:u.sz===3?20:-15;
+
+    // === HAVALİMANI ===
+    if(ans.airport==='imp'){
+      s+=u.apt<=30?70:u.apt<=45?40:u.apt<=60?10:-20;
+    }else if(ans.airport==='meh'){
+      s+=u.apt<=30?40:u.apt<=60?25:5;
+    }else{
+      s+=u.apt<=30?10:0; // çok az fark
+    }
+
+    // === GÜVENLİK ===
+    if(ans.safety==='safe')s+=u.safe*8;
+    if(ans.safety==='bal') s+=u.safe*4+(6-u.nl)*3;
+    if(ans.safety==='dyn') s+=u.nl*8+(10-u.safe)*2;
+
+    // === HEDEF ===
+    if(ans.goal==='net') s+=u.t.includes('ir')?30:0+(u.c==='Berlin'?25:0);
+    if(ans.goal==='ac')  s+=u.ps*5+u.che*4+u.qs*3;
+    if(ans.goal==='job') s+=u.job*7;
+    if(ans.goal==='phd') s+=u.ps*6+u.qs*5+u.che*4;
+
+    return {...u,sc:s};
+  }).sort((a,b)=>b.sc-a.sc);
+}
+
+// ═══════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════
+async function submit(){
+  document.getElementById('qs').classList.add('hidden');
+  document.getElementById('ls').classList.remove('hidden');
+  const ranked=score();
+  const top5=ranked.slice(0,5);
+  const entry={name:cleanName(uname),time:new Date().toLocaleString('tr-TR'),top5:top5.map(u=>({p:u.p,u:u.u,c:u.c})),ans:{...ans}};
+  await saveVote(entry);
+  const ai=await getAI(top5);
+  let allV=[];
+  try{allV=await loadVotes();}catch(e){}
+  render(top5,ranked,ai,allV);
+}
+
+// ═══════════════════════════════════
+// AI ANALİZ
+// ═══════════════════════════════════
+async function getAI(top5){
+  const a=ans;
+  const cmap={diplomat:'diplomat/politika uzmanı',analyst:'veri analisti (özel sektör)',judge:'idari hakim/kamu hukukçusu',academic:'akademisyen',banker:'bankacı/finansçı'};
+  const dmap={de:'Almanya',tr:'Türkiye',intl:'uluslararası',open:'henüz belli değil'};
+  const smap={big:'büyük kozmopolit şehir',mid:'orta boy şehir',small:'sakin üniversite şehri'};
+  const prompt=`Bu anket Taha için dışarıdan birinin bakış açısıyla dolduruldu. Doldturan kişi: ${uname}
+
+Cevaplar:
+- Kariyer hedefi: ${cmap[a.career]||'-'}
+- Uzmanlaşma: ${a.direction}
+- Mezun sonrası: ${dmap[a.afterde]||'-'}
+- Ranking önceliği: ${a.ranking}
+- Prestij/fırsat: ${a.prestige}
+- Dil tercihi: ${a.lang}
+- İş piyasası yakınlığı: ${a.jobmkt?'önemli':'önemli değil'}
+- Şehir tercihi: ${smap[a.citytype]||'-'}
+- Havalimanı: ${a.airport}
+- Güvenlik/dinamizm: ${a.safety}
+- Hedef: ${a.goal}
+
+Önerilen en iyi 5 program:
+${top5.map((u,i)=>`${i+1}. ${u.u} — ${u.p} (${u.c})`).join('\n')}
+
+Türkçe, 3-4 cümle, samimi. "Sen" değil "Taha" diye yaz. Özellikle 1. sıradaki programın bu anketin cevaplarına göre neden en üste çıktığını açıkla, sonra genel bir değerlendirme yap. Max 4 cümle.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();return d.content?.[0]?.text||'';
+  }catch(e){return '';}
+}
+
+// ═══════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════
+function render(top5,ranked,ai,allV){
+  document.getElementById('ls').classList.add('hidden');
+  const el=document.getElementById('rs');
+  el.classList.remove('hidden');el.classList.add('fi');
+  const mx=top5[0].sc,mn=ranked[ranked.length-1].sc;
+  const norm=sc=>mx===mn?100:Math.max(8,Math.round((sc-mn)/(mx-mn)*100));
+  const rkcls=i=>i===0?'rk g':i===1?'rk s':i===2?'rk b':'rk';
+
+  function tags(u){
+    const t=[];
+    if(APTX[u.c])t.push(`<span class="tg">${APTX[u.c]}</span>`);
+    if(u.m)t.push(`<span class="tg c">🚇 Metro</span>`);
+    if(u.safe>=9)t.push(`<span class="tg c">🛡️ Çok güvenli</span>`);
+    if(u.safe<=4)t.push(`<span class="tg w">⚠️ Yüksek suç oranı</span>`);
+    if(u.l==='en')t.push(`<span class="tg">🇬🇧 İngilizce</span>`);
+    if(u.id==='kn_ps'||u.id==='kn_seds')t.push(`<span class="tg c">🌍 Pol.Sci Dünya #11</span>`);
+    if(u.id==='ma_ps'||u.id==='ma_sds')t.push(`<span class="tg c">🌍 Pol.Sci Dünya Top 35</span>`);
+    return t.join('');
+  }
+
+  // vote chart
+  const vc={};
+  allV.forEach(v=>{if(v.top5?.[0]){const k=v.top5[0].p;vc[k]=(vc[k]||0)+1;}});
+  const tv=Object.entries(vc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mv=tv[0]?.[1]||1;
+
+  el.innerHTML=`
+    <div class="rh fi">
+      <div class="chip">✦ ${esc(uname)}'in seçimi</div>
+      <h2>Taha için En Uygun<br>Programlar</h2>
+      <p>Senin bakış açına göre hesaplandı</p>
+    </div>
+
+    ${ai?`<div class="aib fi"><div class="aihd"><span class="aibg">✦ AI Analizi</span></div><div class="ait">${ai.replace(/\n/g,'<br>')}</div></div>`:''}
+
+    <div class="bt">🏆 En uygun 5 program</div>
+    ${top5.map((u,i)=>`
+      <div class="t5i fi" style="animation-delay:${i*.06}s">
+        <div class="${rkcls(i)}">${i+1}</div>
+        <div class="t5n">
+          <div class="t5p">${u.p}</div>
+          <div class="t5u">${u.u} · ${u.c}</div>
+          <div class="t5tg">${tags(u)}</div>
+        </div>
+        <div class="bw"><div class="bf" style="width:${norm(u.sc)}%"></div></div>
+      </div>`).join('')}
+
+    <div class="bt">👥 Diğerleri ne seçti?</div>
+    ${allV.length<=1
+      ?`<p style="color:var(--mt);font-size:13px;padding:6px 0 16px;">Henüz başka kimse doldurmamış — linki paylaş! 🔗</p>`
+      :`${tv.length?`<div style="margin-bottom:18px;">${tv.map(([k,c])=>`<div class="vcr"><span class="vcl">${k.replace('M.A. ','').replace('M.Sc. ','')}</span><span class="vcc">${c}</span><div style="height:3px;width:${Math.round(c/mv*90)}px;background:linear-gradient(90deg,var(--acc),#b47cf8);border-radius:2px;flex-shrink:0;"></div></div>`).join('')}</div>`:''
+      }${allV.map(v=>`<div class="vc fi"><div class="vt"><span class="vn">${esc(v.name)}</span><span class="vd">${esc(v.time)}</span></div><div class="vp">${v.top5.map((p,i)=>`<span class="vpi${i===0?' f':''}">${i===0?'🥇 ':''}${esc(p.u.replace('Universität ','').replace('Freie Universität ','FU '))} — ${esc(p.p.replace('M.A. ','').replace('M.Sc. ',''))}</span>`).join('')}</div></div>`).join('')}`}
+
+    <button class="brst" onclick="restart()">↩ Yeniden doldur</button>
+  `;
+}
+
+function restart(){
+  ans={};done=0;
+  document.getElementById('rs').classList.add('hidden');
+  document.getElementById('rs').innerHTML='';
+  document.getElementById('ns').classList.remove('hidden');
+  document.getElementById('un').value='';
+}
+</script>
+</body>
+</html>
